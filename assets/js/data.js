@@ -28,8 +28,6 @@
 
 const CATEGORIES = [
   { slug: 'dandy',      name: 'Dandy' },
-  { slug: 'star',       name: 'Star Collection' },
-  { slug: 'baggy',      name: 'Baggy Denim' },
   { slug: 'fino',       name: 'Fino' },
   { slug: 'rude',       name: 'Rude' },
   { slug: 'ajustables', name: 'Ajustables' },
@@ -37,7 +35,6 @@ const CATEGORIES = [
   { slug: 'mz',         name: 'MZ Hats' },
   { slug: 'ab',         name: 'AB Hats' },
   { slug: 'xcap',       name: 'X Cap' },
-  { slug: 'lost-calf',  name: 'Lost Calf Original' },
 ];
 
 const PRODUCTS = [
