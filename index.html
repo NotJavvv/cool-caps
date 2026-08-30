@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COOL CAPS — Gorras estilo urbano</title>
+<meta name="description" content="La mejor tienda de gorras — Prendas estilo urbano">
+<link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="#" class="brand">
+      <img src="assets/img/logo.svg" alt="" class="brand-logo">
+      <span class="brand-name">COOL<span>CAPS</span></span>
+    </a>
+    <div class="header-actions">
+      <a id="headerWhatsapp" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp">
+        WhatsApp
+      </a>
+      <button id="cartBtn" class="icon-btn" aria-label="Ver carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span id="cartCount" class="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="category-rail" aria-label="Categorías">
+    <div class="container">
+      <div id="categoryScroll" class="category-scroll"></div>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <!--
+      ESPACIO PARA EL LOGO DEL CLIENTE
+      Reemplaza el archivo assets/img/hero-logo-placeholder.svg
+      por el logo real (puede ser .svg, .png o .jpg). Si usas
+      otro nombre de archivo, actualiza el "src" de esta imagen.
+    -->
+    <img src="assets/img/hero-logo-placeholder.svg" alt="Logo de la tienda" class="hero-logo">
+
+    <p class="hero-eyebrow">Full set · Envío gratis · Pagas al recibir</p>
+    <h1 class="hero-title">COOL CAPS</h1>
+    <p class="hero-sub">La mejor tienda de gorras — Prendas estilo urbano. Bordados originales, chip NFC y caja incluida en cada gorra.</p>
+    <div class="hero-ctas">
+      <button id="heroShopBtn" class="btn btn-primary btn-lg">Ver catálogo</button>
+      <a id="heroWhatsapp" href="#" target="_blank" rel="noopener" class="btn btn-outline btn-lg">Escríbenos</a>
+    </div>
+  </div>
+</section>
+
+<main id="catalogo" class="products-section">
+  <div class="container">
+    <h2 class="section-title">Catálogo</h2>
+    <p class="section-sub">Gorras full set con envío gratis y pago contra entrega.</p>
+    <div id="productGrid" class="product-grid"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p><strong>COOL CAPS</strong> — Prendas estilo urbano y bélico.</p>
+    <p>Hecho con cariño en Guatemala 🇬🇹 · Pedidos por WhatsApp</p>
+  </div>
+</footer>
+
+<!-- Modal de producto -->
+<div id="productModalOverlay" class="overlay">
+  <div class="modal">
+    <button id="modalCloseBtn" class="modal-close" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="modal-gallery">
+      <div id="modalGalleryMain" class="modal-gallery-main"></div>
+      <div id="modalThumbs" class="modal-thumbs"></div>
+    </div>
+
+    <div class="modal-info">
+      <p id="modalCategory" class="modal-category"></p>
+      <h2 id="modalTitle" class="modal-title"></h2>
+      <p id="modalDesc" class="modal-desc"></p>
+
+      <div id="modalBadges" class="badge-list"></div>
+
+      <div class="modal-price-row">
+        <span id="modalPrice" class="modal-price"></span>
+        <span id="modalPriceOld" class="modal-price-old"></span>
+      </div>
+
+      <div class="qty-row">
+        <div class="stepper">
+          <button id="qtyMinus" type="button">−</button>
+          <span id="modalQty">1</span>
+          <button id="qtyPlus" type="button">+</button>
+        </div>
+      </div>
+
+      <button id="addToCartBtn" class="btn btn-accent btn-block btn-lg">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
+
+<!-- Carrito / checkout -->
+<div id="cartDrawerOverlay" class="drawer-overlay">
+  <aside class="drawer">
+    <div class="drawer-header">
+      <h2>Tu pedido</h2>
+      <button id="cartCloseBtn" class="icon-btn" aria-label="Cerrar carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <form id="checkoutForm" class="drawer-body">
+      <div id="cartItemList"></div>
+
+      <div class="checkout-step">
+        <div class="checkout-step-head"><span class="step-num">1</span> Entrega</div>
+        <div class="checkout-step-body">
+          <input id="addressInput" class="field" type="text" placeholder="Calle y número...">
+          <button type="button" id="geoBtn" class="geo-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Usar mi ubicación
+          </button>
+          <input id="addressDetailsInput" class="field" type="text" placeholder="Agregar detalles (depto, referencia)">
+        </div>
+      </div>
+
+      <div class="checkout-step">
+        <div class="checkout-step-head"><span class="step-num">2</span> Datos de contacto</div>
+        <div class="checkout-step-body">
+          <input id="nameInput" class="field" type="text" placeholder="Nombre completo">
+          <input id="phoneInput" class="field" type="tel" placeholder="Número de teléfono">
+        </div>
+      </div>
+
+      <div class="checkout-step">
+        <div class="checkout-step-head"><span class="step-num">3</span> Pago</div>
+        <div class="checkout-step-body">
+          <span class="badge">Pago contra entrega</span>
+        </div>
+      </div>
+
+      <div class="promo-row">
+        <input id="promoInput" class="field" type="text" placeholder="Código de promoción">
+        <button type="button" id="applyPromoBtn" class="btn btn-outline">Aplicar</button>
+      </div>
+      <p id="promoHint" class="form-hint"></p>
+    </form>
+
+    <div class="drawer-footer">
+      <div class="total-row"><span>Subtotal</span><span id="cartSubtotal">Q0</span></div>
+      <div class="total-row"><span>Total</span><span id="cartTotal">Q0</span></div>
+      <button id="checkoutBtn" form="checkoutForm" type="submit" class="btn btn-whatsapp btn-block btn-lg" disabled>
+        Pedir por WhatsApp
+      </button>
+    </div>
+  </aside>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
