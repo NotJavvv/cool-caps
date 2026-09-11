@@ -16,8 +16,8 @@
   --text-muted:    #9C9CA5;
   --text-faint:    #6C6C74;
 
-  --accent-pink:   #FF2E88;
-  --accent-blue:   #2E6BFF;
+  --accent-pink:   #ff0000;
+  --accent-blue:   #C9A227;
   --accent-yellow: #FFD400;
 
   --radius-sm: 8px;
@@ -122,7 +122,7 @@ button{ font-family:inherit; cursor:pointer; }
 .btn-primary{ background:var(--text); color:#101012; }
 .btn-primary:hover{ background:#fff; }
 .btn-accent{ background:var(--accent-pink); color:#fff; }
-.btn-accent:hover{ background:#ff4c9a; }
+.btn-accent:hover{ background:#999999; }
 .btn-outline{ background:transparent; border-color:var(--border); color:var(--text); }
 .btn-outline:hover{ border-color:var(--text-muted); }
 .btn-whatsapp{ background:#22c35e; color:#08210f; }
@@ -168,7 +168,7 @@ button{ font-family:inherit; cursor:pointer; }
   text-align:center;
   overflow:hidden;
   background:
-    radial-gradient(circle at 50% 0%, rgba(255,46,136,.14), transparent 55%),
+    radial-gradient(circle at 50% 0%, rgba(105, 1, 1, 0.14), transparent 55%),
     repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,.025) 0 1px, transparent 1px 3px),
     var(--bg);
 }
@@ -196,7 +196,7 @@ button{ font-family:inherit; cursor:pointer; }
   color:var(--text);
   text-shadow:
     3px 3px 0 var(--accent-pink),
-    6px 6px 0 rgba(46,107,255,.55);
+    6px 6px 0 rgb(5, 5, 5);
   transform:rotate(-1.2deg);
   display:inline-block;
 }
