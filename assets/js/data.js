@@ -15,8 +15,10 @@
       pégalo antes del cierre "];" y cambia sus datos.
    3. "id" debe ser un número que no se repita con ningún otro
       producto.
-   4. "categorySlug" debe coincidir con el "slug" de alguna
-      categoría de la lista CATEGORIES.
+   4. "categorySlugs" es una LISTA de una o más categorías —
+      úsala con un solo valor si la gorra pertenece a una sola
+      marca, o con dos+ valores si debe aparecer en varios
+      apartados (ej. colaboraciones entre marcas).
    5. "gallery" es la lista de fotos del modal de detalle —
       puedes poner una sola foto o varias.
    6. Guarda el archivo y recarga la página (Ctrl+Shift+R).
@@ -29,13 +31,11 @@
    -----------------------------------------------------------
    NOTA SOBRE LAS FOTOS
    -----------------------------------------------------------
-   Los nombres de archivo de fotos que enviaste (dandy001,
-   Day001, Thirty001, Sayonara001, Rico001, Big001, Klan001,
-   X001, Fino001, Mz001, etc.) se normalizaron todos a
-   minúsculas aquí abajo. Sube tus fotos a assets/img/caps/
-   usando esos mismos nombres en minúsculas y la extensión
-   .jpg (si tus fotos son .png o .webp, solo cambia la
-   extensión en cada ruta de este archivo).
+   Todos los nombres de archivo se guardan en minúsculas.
+   Sube tus fotos a assets/img/caps/ usando esos mismos
+   nombres en minúsculas y la extensión .jpg (si tus fotos
+   son .png o .webp, solo cambia la extensión en cada ruta
+   de este archivo).
    ========================================================= */
 
 const CATEGORIES = [
@@ -49,13 +49,19 @@ const CATEGORIES = [
   { slug: 'xcap',     name: 'X Cap' },
   { slug: 'fino',     name: 'Fino' },
   { slug: 'mz',       name: 'MZ Hats' },
+  { slug: 'kevin',    name: 'Kevin Hats' },
+  { slug: 'shifu',    name: 'Shifu' },
+  { slug: 'chuky',    name: 'Chucky Hats' },
+  { slug: 'abz',      name: 'ABZ' },
 ];
+
+const FULL_SET_BADGES = ['Full set', 'Envío gratis', 'Pagas al recibir', 'Incluye cubrepolvos', 'Caja', 'Cepillo', 'Chip NFC funcionando'];
 
 const PRODUCTS = [
   {
     id: 1,
     name: 'Dandy Lost Hills',
-    categorySlug: 'dandy',
+    categorySlugs: ['dandy'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -66,12 +72,12 @@ const PRODUCTS = [
       'assets/img/caps/dandy003.jpg',
       'assets/img/caps/dandy004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 2,
     name: 'Counting Day',
-    categorySlug: 'day',
+    categorySlugs: ['day'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -82,12 +88,12 @@ const PRODUCTS = [
       'assets/img/caps/day003.jpg',
       'assets/img/caps/day004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 3,
     name: 'Thirty One Us The World',
-    categorySlug: 'thirty',
+    categorySlugs: ['thirty'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -98,12 +104,12 @@ const PRODUCTS = [
       'assets/img/caps/thirty003.jpg',
       'assets/img/caps/thirty004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 4,
     name: 'Gorra Baez Sayonara',
-    categorySlug: 'baez',
+    categorySlugs: ['baez'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -114,12 +120,12 @@ const PRODUCTS = [
       'assets/img/caps/sayonara003.jpg',
       'assets/img/caps/sayonara004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 5,
     name: 'Rico Hats No Dark No Stars',
-    categorySlug: 'rico',
+    categorySlugs: ['rico'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -130,12 +136,12 @@ const PRODUCTS = [
       'assets/img/caps/rico003.jpg',
       'assets/img/caps/rico004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 6,
     name: 'Big Boss San Diego',
-    categorySlug: 'big',
+    categorySlugs: ['big'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -146,12 +152,12 @@ const PRODUCTS = [
       'assets/img/caps/big003.jpg',
       'assets/img/caps/big004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 7,
     name: 'Rico Hats Chrome Black',
-    categorySlug: 'rico',
+    categorySlugs: ['rico'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -162,12 +168,12 @@ const PRODUCTS = [
       'assets/img/caps/rico007.jpg',
       'assets/img/caps/rico008.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 8,
     name: 'Klan Hats SX',
-    categorySlug: 'klan',
+    categorySlugs: ['klan'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -178,12 +184,12 @@ const PRODUCTS = [
       'assets/img/caps/klan003.jpg',
       'assets/img/caps/klan004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 9,
     name: 'Klan Hats Los Angeles',
-    categorySlug: 'klan',
+    categorySlugs: ['klan'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -194,12 +200,12 @@ const PRODUCTS = [
       'assets/img/caps/klan007.jpg',
       'assets/img/caps/klan008.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 10,
     name: 'Dandy Hats Sad Boyz',
-    categorySlug: 'dandy',
+    categorySlugs: ['dandy'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -210,12 +216,12 @@ const PRODUCTS = [
       'assets/img/caps/dandy007.jpg',
       'assets/img/caps/dandy008.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 11,
     name: 'Xcap Viacrucis',
-    categorySlug: 'xcap',
+    categorySlugs: ['xcap'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -226,12 +232,12 @@ const PRODUCTS = [
       'assets/img/caps/x003.jpg',
       'assets/img/caps/x004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 12,
     name: 'Dandy Hats Sad Boyz',
-    categorySlug: 'dandy',
+    categorySlugs: ['dandy'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -242,12 +248,12 @@ const PRODUCTS = [
       'assets/img/caps/dandy011.jpg',
       'assets/img/caps/dandy012.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 13,
     name: 'Big Boss Doble B',
-    categorySlug: 'big',
+    categorySlugs: ['big'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -258,12 +264,12 @@ const PRODUCTS = [
       'assets/img/caps/big007.jpg',
       'assets/img/caps/big008.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 14,
     name: 'Fino Magic',
-    categorySlug: 'fino',
+    categorySlugs: ['fino'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -274,12 +280,12 @@ const PRODUCTS = [
       'assets/img/caps/fino003.jpg',
       'assets/img/caps/fino004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 15,
     name: 'MZ Hats Rico O Muerto',
-    categorySlug: 'mz',
+    categorySlugs: ['mz'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -290,12 +296,12 @@ const PRODUCTS = [
       'assets/img/caps/mz003.jpg',
       'assets/img/caps/mz004.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
   },
   {
     id: 16,
     name: 'Thirty One LA',
-    categorySlug: 'thirty',
+    categorySlugs: ['thirty'],
     price: 600,
     oldPrice: null,
     description: '',
@@ -306,6 +312,134 @@ const PRODUCTS = [
       'assets/img/caps/thirty007.jpg',
       'assets/img/caps/thirty008.jpg',
     ],
-    badges: [],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 17,
+    name: 'Kevin Hats x Big Boss',
+    categorySlugs: ['big', 'kevin'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/kevin001.jpg',
+    gallery: [
+      'assets/img/caps/kevin001.jpg',
+      'assets/img/caps/kevin002.jpg',
+      'assets/img/caps/kevin003.jpg',
+      'assets/img/caps/kevin004.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 18,
+    name: 'Shifu x Baez',
+    categorySlugs: ['shifu', 'baez'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/shifu001.jpg',
+    gallery: [
+      'assets/img/caps/shifu001.jpg',
+      'assets/img/caps/shifu002.jpg',
+      'assets/img/caps/shifu003.jpg',
+      'assets/img/caps/shifu004.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 19,
+    name: 'Chucky Hats El BOO V2 White',
+    categorySlugs: ['chuky'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/chu001.jpg',
+    gallery: [
+      'assets/img/caps/chu001.jpg',
+      'assets/img/caps/chu002.jpg',
+      'assets/img/caps/chu003.jpg',
+      'assets/img/caps/chu004.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 20,
+    name: 'Chucky Hats Mexicos Most Wanted',
+    categorySlugs: ['chuky'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/chu005.jpg',
+    gallery: [
+      'assets/img/caps/chu005.jpg',
+      'assets/img/caps/chu006.jpg',
+      'assets/img/caps/chu007.jpg',
+      'assets/img/caps/chu009.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 21,
+    name: 'Big Boss San Diego beige',
+    categorySlugs: ['big'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/big009.jpg',
+    gallery: [
+      'assets/img/caps/big009.jpg',
+      'assets/img/caps/big010.jpg',
+      'assets/img/caps/big011.jpg',
+      'assets/img/caps/big012.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 22,
+    name: 'ABZ Total Black',
+    categorySlugs: ['abz'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/abz001.jpg',
+    gallery: [
+      'assets/img/caps/abz001.jpg',
+      'assets/img/caps/abz002.jpg',
+      'assets/img/caps/abz003.jpg',
+      'assets/img/caps/abz004.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+  {
+    id: 23,
+    name: 'Dandy Dandywood',
+    categorySlugs: ['dandy'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/dandy013.jpg',
+    gallery: [
+      'assets/img/caps/dandy013.jpg',
+      'assets/img/caps/dandy014.jpg',
+      'assets/img/caps/dandy015.jpg',
+      'assets/img/caps/dandy016.jpg',
+    ],
+    badges: FULL_SET_BADGES,
+  },
+    {
+    id: 24,
+    name: 'Big Boss x Klan Hats Sad Boss',
+    categorySlugs: ['big', 'klan'],
+    price: 600,
+    oldPrice: null,
+    description: '',
+    image: 'assets/img/caps/big013.jpg',
+    gallery: [
+      'assets/img/caps/big013.jpg',
+      'assets/img/caps/big014.jpg',
+      'assets/img/caps/big015.jpg',
+      'assets/img/caps/big016.jpg',
+    ],
+    badges: FULL_SET_BADGES,
   },
 ];
