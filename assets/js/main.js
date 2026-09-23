@@ -95,10 +95,14 @@ function renderCategoryRail() {
 
 /* ---------------------------------------------------------
    Productos
+   Nota: cada producto tiene "categorySlugs" (una lista),
+   así una gorra puede aparecer en más de un apartado, por
+   ejemplo una colaboración entre dos marcas, sin duplicarse
+   en la vista "Todos".
 --------------------------------------------------------- */
 function getFilteredProducts() {
   if (state.activeCategory === 'todos') return PRODUCTS;
-  return PRODUCTS.filter(p => p.categorySlug === state.activeCategory);
+  return PRODUCTS.filter(p => p.categorySlugs.includes(state.activeCategory));
 }
 
 function renderProducts(products) {
@@ -154,10 +158,13 @@ function openProductModal(id) {
 const badgeIcon = `<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.3 5.6 6 .5-4.6 3.9 1.5 5.9L10 13.8l-5.2 3.1 1.5-5.9L1.7 7.1l6-.5z"/></svg>`;
 
 function renderProductModal(p) {
-  const category = CATEGORIES.find(c => c.slug === p.categorySlug);
+  const categoryNames = p.categorySlugs
+    .map(slug => CATEGORIES.find(c => c.slug === slug)?.name)
+    .filter(Boolean)
+    .join(' · ');
   const dp = discountPercent(p);
 
-  $('#modalCategory').textContent = category ? category.name : '';
+  $('#modalCategory').textContent = categoryNames;
   $('#modalTitle').textContent = p.name;
   $('#modalDesc').textContent = p.description || '';
   $('#modalPrice').textContent = fmt(p.price);
