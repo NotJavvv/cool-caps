@@ -55,7 +55,7 @@ const CATEGORIES = [
   { slug: 'abz',      name: 'ABZ' },
 ];
 
-const FULL_SET_BADGES = ['Full set', 'Envío gratis', 'Pagas al recibir', 'Incluye cubrepolvos', 'Caja', 'Cepillo', 'Chip NFC funcionando'];
+const FULL_SET_BADGES = ['Full set', 'Envío gratis', 'Pagas al recibir', 'Incluye cubrepolvos', 'Caja', 'Chip NFC funcionando'];
 
 const PRODUCTS = [
   {

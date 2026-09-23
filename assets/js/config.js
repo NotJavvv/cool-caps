@@ -10,8 +10,9 @@ const CONFIG = {
 
   // Número de WhatsApp que recibe los pedidos, formato internacional sin '+'.
   // Ejemplo Guatemala: 502 5555 5555 -> '50255555555'
-  whatsappNumber: '50245931731',
+  whatsappNumber: '50253250624',
 
-  // Código de promoción de ejemplo (demo, no aplica descuento real al total).
-  promoCode: 'COOL10',
+  // Código de promoción — SÍ aplica descuento real al total del carrito.
+  promoCode: 'seguidor2.0',
+  promoDiscountPercent: 10,
 };

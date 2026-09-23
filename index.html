@@ -67,8 +67,8 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p><strong>COOL CAPS</strong> — Prendas estilo urbano y bélico.</p>
-    <p>Hecho con cariño en Guatemala 🇬🇹 · Pedidos por WhatsApp</p>
+    <p><strong>COOL CAPS</strong> — Gorras estilo urbano y bélico.</p>
+    <p>Sitio web hecho por Javier 🇬🇹 · Pedidos por WhatsApp</p>
   </div>
 </footer>
 
@@ -125,7 +125,7 @@
       <div class="checkout-step">
         <div class="checkout-step-head"><span class="step-num">1</span> Entrega</div>
         <div class="checkout-step-body">
-          <input id="addressInput" class="field" type="text" placeholder="Calle y número...">
+          <input id="addressInput" class="field" type="text" placeholder="Calle y número..." required>
           <button type="button" id="geoBtn" class="geo-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
             Usar mi ubicación
@@ -137,15 +137,22 @@
       <div class="checkout-step">
         <div class="checkout-step-head"><span class="step-num">2</span> Datos de contacto</div>
         <div class="checkout-step-body">
-          <input id="nameInput" class="field" type="text" placeholder="Nombre completo">
-          <input id="phoneInput" class="field" type="tel" placeholder="Número de teléfono">
+          <input id="nameInput" class="field" type="text" placeholder="Nombre completo" required>
+          <input id="phoneInput" class="field" type="tel" placeholder="Número de teléfono" required pattern="[0-9+\s-]{8,}" title="Ingresa un número de teléfono válido">
         </div>
       </div>
 
       <div class="checkout-step">
         <div class="checkout-step-head"><span class="step-num">3</span> Pago</div>
-        <div class="checkout-step-body">
-          <span class="badge">Pago contra entrega</span>
+        <div class="checkout-step-body payment-options">
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="entrega" checked>
+            <span class="badge">Pago contra entrega</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="deposito">
+            <span class="badge">Previo depósito</span>
+          </label>
         </div>
       </div>
 
@@ -158,6 +165,10 @@
 
     <div class="drawer-footer">
       <div class="total-row"><span>Subtotal</span><span id="cartSubtotal">Q0</span></div>
+      <div class="total-row" id="cartDiscountRow" style="display:none;">
+        <span>Descuento (<span id="cartDiscountPercent"></span>%)</span>
+        <span id="cartDiscountAmount">-Q0</span>
+      </div>
       <div class="total-row"><span>Total</span><span id="cartTotal">Q0</span></div>
       <button id="checkoutBtn" form="checkoutForm" type="submit" class="btn btn-whatsapp btn-block btn-lg" disabled>
         Pedir por WhatsApp
