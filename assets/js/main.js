@@ -11,6 +11,7 @@ const state = {
   cart: JSON.parse(localStorage.getItem('coolcaps_cart') || '[]'),
   currentProduct: null,
   locationMapsUrl: null,
+  promoApplied: null, // { code, percent } cuando el código es válido
 };
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -258,6 +259,15 @@ function cartSubtotal() {
   return state.cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
 }
 
+function cartDiscount() {
+  if (!state.promoApplied) return 0;
+  return Math.round(cartSubtotal() * (state.promoApplied.percent / 100));
+}
+
+function cartTotal() {
+  return cartSubtotal() - cartDiscount();
+}
+
 function renderCartBadge() {
   const count = state.cart.reduce((sum, i) => sum + i.quantity, 0);
   const badge = $('#cartCount');
@@ -298,8 +308,23 @@ function renderCart() {
   }
 
   const subtotal = cartSubtotal();
+  const discount = cartDiscount();
+  const total = cartTotal();
+
   $('#cartSubtotal').textContent = fmt(subtotal);
-  $('#cartTotal').textContent = fmt(subtotal);
+  $('#cartTotal').textContent = fmt(total);
+
+  const discountRow = $('#cartDiscountRow');
+  if (discountRow) {
+    if (state.promoApplied && discount > 0) {
+      discountRow.style.display = 'flex';
+      $('#cartDiscountPercent').textContent = state.promoApplied.percent;
+      $('#cartDiscountAmount').textContent = `-${fmt(discount)}`;
+    } else {
+      discountRow.style.display = 'none';
+    }
+  }
+
   $('#checkoutBtn').disabled = state.cart.length === 0;
 }
 
@@ -388,20 +413,30 @@ function formatAddress(data) {
 }
 
 /* ---------------------------------------------------------
-   Código de promoción (demo simple en el cliente)
+   Código de promoción — SÍ aplica descuento real al total
 --------------------------------------------------------- */
 function applyPromo() {
-  const code = $('#promoInput').value.trim().toUpperCase();
+  const raw = $('#promoInput').value.trim();
   const hint = $('#promoHint');
-  if (!code) { hint.textContent = ''; return; }
 
-  if (code === CONFIG.promoCode) {
+  if (!raw) {
+    state.promoApplied = null;
+    hint.textContent = '';
+    renderCart();
+    return;
+  }
+
+  if (raw.toLowerCase() === CONFIG.promoCode.toLowerCase()) {
+    state.promoApplied = { code: CONFIG.promoCode, percent: CONFIG.promoDiscountPercent };
     hint.style.color = '#22c35e';
-    hint.textContent = 'Código aplicado: 10% en tu próximo pedido (se confirma por WhatsApp).';
+    hint.textContent = `Código aplicado: ${CONFIG.promoDiscountPercent}% de descuento en tu pedido.`;
   } else {
+    state.promoApplied = null;
     hint.style.color = 'var(--accent-pink)';
     hint.textContent = 'Código no válido.';
   }
+
+  renderCart();
 }
 
 /* ---------------------------------------------------------
@@ -415,10 +450,22 @@ function handleCheckout(e) {
   const details = $('#addressDetailsInput').value.trim();
   const name = $('#nameInput').value.trim();
   const phone = $('#phoneInput').value.trim();
-  const promo = $('#promoInput').value.trim();
+
+  const paymentInput = document.querySelector('input[name="paymentMethod"]:checked');
+  const paymentMethod = paymentInput && paymentInput.value === 'deposito'
+    ? 'Previo depósito'
+    : 'Pago contra entrega';
 
   if (!address) {
     showToast('Ingresa tu dirección de entrega');
+    return;
+  }
+  if (!name) {
+    showToast('Ingresa tu nombre completo');
+    return;
+  }
+  if (!phone) {
+    showToast('Ingresa tu número de teléfono');
     return;
   }
   if (!state.cart.length) {
@@ -426,9 +473,16 @@ function handleCheckout(e) {
     return;
   }
 
+  const subtotal = cartSubtotal();
+  const discount = cartDiscount();
+  const total = cartTotal();
+
   const payload = {
     name, phone, address, addressDetails: details,
-    promoCode: promo || null,
+    promoCode: state.promoApplied ? state.promoApplied.code : null,
+    discountPercent: state.promoApplied ? state.promoApplied.percent : 0,
+    subtotal, discount, total,
+    paymentMethod,
     mapsUrl: state.locationMapsUrl,
     items: state.cart.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
   };
@@ -437,26 +491,31 @@ function handleCheckout(e) {
 
   state.cart = [];
   state.locationMapsUrl = null;
+  state.promoApplied = null;
+  $('#promoInput').value = '';
+  $('#promoHint').textContent = '';
+
   saveCart();
   renderCart();
   closeCart();
 }
 
 function openWhatsAppOrder(payload) {
-  const total = payload.items.reduce((s, i) => s + i.price * i.quantity, 0);
-
   const lines = [
     `¡Hola! Quiero hacer un pedido en *${CONFIG.storeName}*`,
     '',
     ...payload.items.map(i => `• ${i.quantity}x ${i.name} — ${fmt(i.price * i.quantity)}`),
     '',
-    `Total: ${fmt(total)}`,
+    `Subtotal: ${fmt(payload.subtotal)}`,
+    payload.discount > 0
+      ? `Descuento (${payload.discountPercent}% código ${payload.promoCode}): -${fmt(payload.discount)}`
+      : null,
+    `Total: ${fmt(payload.total)}`,
     `Dirección: ${payload.address}${payload.addressDetails ? ' (' + payload.addressDetails + ')' : ''}`,
     payload.mapsUrl ? `📍 Ubicación en mapa: ${payload.mapsUrl}` : null,
     payload.name ? `Nombre: ${payload.name}` : null,
     payload.phone ? `Teléfono: ${payload.phone}` : null,
-    payload.promoCode ? `Código promo: ${payload.promoCode}` : null,
-    'Pago: contra entrega',
+    `Pago: ${payload.paymentMethod}`,
   ].filter(Boolean).join('\n');
 
   const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(lines)}`;
